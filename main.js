@@ -1,106 +1,131 @@
 $(function() {
-  function Card(s, n){
-     var suit = s;
-     this.getSuit = function(){
-         if(suit === 1){
-             return "Hearts";
-         }
-         if(suit === 2){
-             return "Spades";
-         }
-         if(suit === 3){
-             return "Diamonds";
-         }
-         if(suit === 4){
-             return "Clubs"
-         }
-     };
-     var number = n;
-     this.getNumber = function(){
-         switch(n){
-             case 11:
-             actualCard = "Jack";
-             break;
+      // $.get('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1',[deck_count]);
 
-             case 12:
-             actualCard = "Queen";
-             break;
+      var suits = ["\u2660","\u2663","\u2665","\u2666"];
+      var faces = ["Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"];
 
-             case 13:
-             actualCard = "King";
-             break;
+      var deck = [];
 
-             case 1:
-             actualCard = "Ace";
-             break;
+      var resetDeck = function() {
+        for (i = 0; i < 52; i++) {
+          deck[i] = false;
+        }
+      };
+      function Card(cardNum) {
+        var suit = Math.floor(cardNum / 13);
+        var number = cardNum % 13;
+        var index = cardNum;
+        this.getSuit = function() {
+          return suits[suit];
+        };
+        this.getFace = function() {
+          return faces[number];
+        };
+        this.getName = function() {
+          return this.getFace() + " of " + this.getSuit();
+        };
+        this.getIndex = function() {
+          return index;
+        };
+        this.getValue = function() {
+          if (number === 0) {
+            return 11;
+          } else if (number > 9) {
+            return 10;
+          } else {
+            return number + 1;
+          }
+        };
+      }
 
-             default:
-             actualCard = n;
-             break;
-         }
-         //console.log("number is " + n);
-         return actualCard;
-     };
-     this.getValue = function(){
-         if (number > 10){
-             return 10;
-         }
-         else if (number === 1){
-             return 11;
-         }
-         else {
-         return number;
-         }
-     };
-  }
+      var deal = function() {
+        var used = true;
+        var cardNum;
+        while (used === true) {
+          cardNum = Math.floor(Math.random() * 52);
+          used = deck[cardNum];
+        }
+        var myCard = new Card(cardNum);
+        deck[cardNum] = true;
+        return myCard;
+      };
 
-  function deal(){
-     suit = Math.floor(Math.random()*4+1);
-     number = Math.floor(Math.random()*13+1);
-     return new Card(suit, number);
-  }
-
-  function Hand(){
-     var holding = [];
-     holding[0] = deal();
-     holding[1] = deal();
-     this.getHand = function(){
-         //console.log(holding);
-         return holding;
-     };
-     this.score = function(){
-         var sum = 0;
-         var ace = 0;
-         for (i=0; i<holding.length; i++){
-            sum += holding[i].getValue();
-            if(holding[i].getValue() === 11)
-              ace++;
-            while(sum > 21 && ace > 0) {
-                sum -= 10;
-                ace--;
+      function Hand() {
+        var cards = [];
+        cards[0] = deal();
+        cards[1] = deal();
+        this.score = function() {
+          var aces = 0,
+            temp = 0;
+          for (var i = 0; i < cards.length; i++) {
+            aces += (cards[i].getFace() === "Ace") ? 1 : 0;
+            temp += cards[i].getValue();
+          }
+          while (temp > 21 && aces > 0) {
+            temp -= 10;
+            aces--;
+          }
+          return temp;
+        };
+        this.printHand = function() {
+          var handString = "",
+            rx, sx;
+          for (var i = 0; i < cards.length; i++) {
+            if (i > 0) {
+              handString += ", ";
             }
-         }
-         //console.log("sum = " + sum);
-         return sum;
-     };
-     this.printHand = function(){
-         var pHand = "";
-         for(i=0; i< holding.length; i++){
-             pHand += holding[i].getNumber() + " of " + holding[i].getSuit() +", ";
-         }
-         return pHand;
-     };
-     this.hitMe = function(){
-         card = deal();
-         holding.push(card);
-         /*console.log("Your hand is now "+ this.printHand() +
-         " and your score is now " + this.score());*/
-     }
-  }
-}
-var newDeal = new Hand();
-console.log("Your hand is " + newDeal.printHand());
-console.log("Your score is " + newDeal.score());
-newDeal.hitMe();
-console.log("Your hand is now "+ newDeal.printHand() +
-         " and your score is now " + newDeal.score());
+            handString += cards[i].getName();
+          }
+          return handString;
+        };
+        this.hitMe = function() {
+          if (this.score() < 21) {
+            cards.push(deal());
+          }
+        };
+      }
+      var playAsUser = function() {
+        var userHand = new Hand();
+        var hit = userHand.score() < 21;
+        while (hit && userHand.score() < 21) {
+          hit = confirm(userHand.printHand() + " Hit or stand?");
+          if (hit) {
+            userHand.hitMe();
+          }
+        }
+        return userHand;
+      };
+      var playAsDealer = function() {
+        var dealerHand = new Hand();
+        while (dealerHand.score() < 17) {
+          dealerHand.hitMe();
+        }
+        return dealerHand;
+      };
+      var declareWinner = function(userHand, dealerHand) {
+        var u = userHand.score();
+        var d = dealerHand.score();
+        console.log("Player: " + u + "\nDealer: " + d);
+        if (u === d || (u > 21 && d > 21)) {
+          return "You pushed!";
+        } else if (u > 21 || (u < d && d <= 21)) {
+          return "You lose!";
+        } else {
+          return "You win!";
+        }
+      };
+      var player, dealer, ready;
+      var playGame = function() {
+        resetDeck();
+        player = playAsUser();
+        dealer = playAsDealer();
+        console.log("Player: " + player.printHand() + "\nDealer: " + dealer.printHand());
+        console.log(declareWinner(player, dealer));
+      };
+      do {
+        ready = confirm("Ready?");
+        if (ready) {
+          playGame();
+        }
+      } while (ready);
+})
