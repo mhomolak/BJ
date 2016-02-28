@@ -6,13 +6,13 @@ $(function() {
              return "Hearts";
          }
          if(suit === 2){
-             return "Clubs";
+             return "Spades";
          }
          if(suit === 3){
              return "Diamonds";
          }
          if(suit === 4){
-             return "Spades"
+             return "Clubs"
          }
      };
      var number = n;
