@@ -3,7 +3,6 @@ $(function() {
   localStorage.PlayerWins = 0;
   localStorage.DealerWins = 0;
 
-
   function scoreTally() {
     if ($('.winner').text() === "Player Wins!") {
       localStorage.PlayerWins++;
@@ -38,7 +37,6 @@ $(function() {
         "KING": 10,
         "ACE": 11,
       }
-
 
     var showPlayerCard = function(card) {
       console.log('showPlayercard', card);
@@ -131,7 +129,6 @@ $(function() {
       }
     };
 
-
     $('.newGame').on('click', function() {
       scoreTally();
       $('.winner').text("Good Luck!");
@@ -145,7 +142,6 @@ $(function() {
       playerHand = [];
       dealerHand = [];
       $('.dealerScore').text(0);
-
       $('img').remove();
       draw.cards(3).done(function(cards) {
         playerHand.push(cards[0], cards[1]);
