@@ -87,10 +87,10 @@ $(function() {
         showPlayerCard(newCard[0]);
         $('.playerScore').text(handScores['playerHandValue']);
         if (handScores["playerHandValue"] > 21) {
-          $('.winner').text("Dealer Wins!");
           $('.hitButton').hide();
           $('.standButton').hide();
           $('.newGame').show();
+          $('.winner').text("Dealer Wins!");
         }
         if (handScores["playerHandValue"] === 21) {
           $('.hitButton').hide();
