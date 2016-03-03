@@ -72,7 +72,9 @@ $(function() {
       }
       if(aceCount > 1 && handScores[whichHand] > 21) {
         handScores[whichHand] -= 10;
-        aceCount--;
+      }
+      if(aceCount > 2 && handScores[whichHand] > 21) {
+        handScores[whichHand] -= 10;
       }
     }
 
