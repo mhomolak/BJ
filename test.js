@@ -92,6 +92,9 @@ $(function() {
           $('.standButton').hide();
           $('.newGame').show();
         }
+        if (handScores["playerHandValue"] === 21) {
+          $('.hitButton').hide();
+        }
       });
     });
 
