@@ -85,6 +85,7 @@ $(function() {
         if (handScores["playerHandValue"] > 21) {
           $('.winner').text("Dealer Wins!");
           $('.hitButton').hide();
+          $('.standButton').hide();
           $('.newGame').show();
         }
       });
