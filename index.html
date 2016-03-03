@@ -6,22 +6,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="style.css">
   <script type="text/javascript" src="test.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 </head>
 <body>
-  <h1>Blackjack</h1>
+  <header>
+    <h1>Blackjack</h1>
+  </header>
   <section>
+    <label>Dealer</label>
     <div class="Dealer"></div>
-    <div class="Player"></div>
-  </section>
-  <section>
-    <button class="hitButton">Hit</button>
-    <button class="standButton">Stand</button>
-    <button class="newGame">New Game</button>
-  </section>
-  <section>
     <div class="dealerScore">Dealer Total</div>
+    <label>Player</label>
+    <div class="Player"></div>
     <div class="playerScore">Player Total</div>
+  </section>
+  <section>
     <div class="winner"></div>
+    <a href="#" id="button" class="hitButton">Hit</a>
+    <!-- <button class="hitButton">Hit</button> -->
+    <!-- <button class="standButton">Stand</button>
+    <button class="newGame">New Game</button> -->
+    <a href="#" id="button" class="standButton">Stand</a>
+    <a href="#" id="button" class="newGame">New Game</a>
   </section>
 
 </body>

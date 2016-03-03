@@ -3,6 +3,8 @@ $(function() {
   localStorage.PlayerWins = 0;
   localStorage.DealerWins = 0;
 
+  $('.winner').text("Good Luck!");
+
   function scoreTally() {
     if ($('.winner').text() === "Player Wins!") {
       localStorage.PlayerWins++;
