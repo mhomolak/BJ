@@ -61,8 +61,6 @@ $(function() {
       var aceCount = 0;
 
       currentHand.forEach(function(card) {
-        // TODO Add logic for Ace valuation based on the hand score
-        // You might want to use the array.sort() method to rearrange the array and look at the ace value last.
         if(card.value === 'ACE'){
           aceCount++;
         }
@@ -146,6 +144,12 @@ $(function() {
       draw.cards(3).done(function(cards) {
         playerHand.push(cards[0], cards[1]);
         updateHandValue(playerHand, "playerHandValue");
+        if(handScores['playerHandValue'] === 21) {
+          $('.winner').text("Player Wins!");
+          $('.hitButton').hide();
+          $('.standButton').hide();
+          $('.newGame').show();
+        }
         $('.playerScore').text(handScores['playerHandValue']);
         showPlayerCard(cards[0]);
         showPlayerCard(cards[1]);
