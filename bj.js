@@ -41,17 +41,14 @@ $(function() {
       }
 
     var showPlayerCard = function(card) {
-      console.log('showPlayercard', card);
       $('.Player').append('<img src="' + card.image + '"/>');
     }
     var showDealerCard = function(card) {
-      console.log('showDealercard', card);
       $('.Dealer').append('<img src="' + card.image + '"/>');
     }
 
     var draw = {
       cards: function(cardQuantity) {
-        console.log('cardQuantity', cardQuantity);
         return $.getJSON('http://deckofcardsapi.com/api/deck/' + deckId + '/draw/?count=' + cardQuantity).then(function(data) {
           return data.cards;
         });
@@ -104,9 +101,10 @@ $(function() {
       $('.standButton').hide();
       $('.newGame').show();
     });
+
     var playAsDealer = function(dealerHand, check) {
 
-      if (handScores['dealerHandValue'] < 17 && handScores['dealerHandValue'] != 21) {
+      if (handScores['dealerHandValue'] < 17 && handScores['dealerHandValue'] !== 21) {
         dealerHit()
       } else {
         declareWinner();
@@ -124,11 +122,11 @@ $(function() {
     };
 
     function declareWinner() {
-      var p = handScores['playerHandValue'];
-      var d = handScores['dealerHandValue'];
-      if (p === d) {
+      var player = handScores['playerHandValue'];
+      var dealer = handScores['dealerHandValue'];
+      if (player === dealer) {
         $('.winner').text("PUSH!");
-      } else if (p < d && d <= 21) {
+      } else if (player < dealer && dealer <= 21) {
         $('.winner').text("Dealer Wins!");
       } else {
         $('.winner').text("Player Wins!");
@@ -158,6 +156,7 @@ $(function() {
           $('.standButton').hide();
           $('.newGame').show();
         }
+
         $('.playerScore').text(handScores['playerHandValue']);
         showPlayerCard(cards[0]);
         showPlayerCard(cards[1]);
